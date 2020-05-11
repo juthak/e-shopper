@@ -13,7 +13,10 @@ class ProductController extends Controller
 {
     public function index()
     {
+        return view('admin.ProductDashboard')->with('products', Product::paginate(5));   //แสดงผลข้อมูล product ที่หน้า ProductDashboard
     }
+
+
 
     public function create()
     {
@@ -50,6 +53,37 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->image = $imageName;
         $product->save();
-        return redirect('admin/createProduct');
+        return redirect('admin/dashboard');
+    }
+
+    //EDIT แก้ไขข้อมูลสินค้า
+    public function edit($id)
+    {
+
+        $product = product::find($id); //ดึงข้อมูลเก่ามาแสดงตอนแก้ไขข้อมูล
+        return view('admin.editProductForm')->with('product', $product);
+    }
+
+
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',      //ชนิดตัวเลขเท่านั้น
+        ]);
+        $product = Product::find($id);
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->save();
+        return redirect('admin/dashboard');
+    }
+    //DELETE ข้อมูลสินค้า
+    public function delete($id)
+    {
+        Product::destroy($id);
+        return redirect('admin/dashboard');
     }
 }
