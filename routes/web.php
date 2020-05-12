@@ -39,4 +39,5 @@ Route::post('admin/createProduct', 'Admin\ProductController@store');
 Route::get('/admin/editProduct/{id}', 'Admin\ProductController@edit');  //แก้ไข Product นิยาม router > Controller
 Route::get('/admin/editProductImage/{id}', 'Admin\ProductController@editImage');
 Route::post('/admin/updateProduct/{id}', 'Admin\ProductController@update');  //update Product
+Route::post('/admin/updateProductImage/{id}', 'Admin\ProductController@updateImage');  //update Product
 Route::get('/admin/deleteProduct/{id}', 'Admin\ProductController@delete');   //delete Product

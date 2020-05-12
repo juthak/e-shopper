@@ -28,7 +28,7 @@
                     <td>{{$product->description}}</td>
                     <td>{{number_format($product->price)}}</td>
 
-                      <td> <a href="/admin/editProduct/{{$product->image}}" class="btn btn-success">แก้ไขรูปภาพ</td>
+                      <td> <a href="/admin/editProductImage/{{$product->id}}" class="btn btn-success">แก้ไขรูปภาพ</td>
                      <td> <a href="/admin/editProduct/{{$product->id}}" class="btn btn-primary">แก้ไข</td>
                       <td> <a href="/admin/deleteProduct/{{$product->id}}" class="btn btn-danger" onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่ ?')">ลบ</td>
                     </tr>

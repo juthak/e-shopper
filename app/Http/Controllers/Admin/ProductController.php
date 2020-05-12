@@ -8,6 +8,7 @@ use App\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use  App\Product;
+use League\CommonMark\Inline\Element\Strong;
 
 class ProductController extends Controller
 {
@@ -22,6 +23,9 @@ class ProductController extends Controller
     {
         return view('admin.ProductForm')->with('categories', Category::all());  //โยนค่าไปแสดงผลที่แบบฟอร์ม
     }
+
+
+
 
 
     public function store(Request $request)
@@ -64,6 +68,18 @@ class ProductController extends Controller
         return view('admin.editProductForm')->with('product', $product);
     }
 
+    //EDIT แก้ไขรูปภาพ
+    public function editImage($id)
+    {
+
+        $product = product::find($id); //ดึงข้อมูลเก่ามาแสดงตอนแก้ไขข้อมูล
+        return view('admin.editProductImage')->with('product', $product);
+    }
+
+
+
+
+
 
 
     public function update(Request $request, $id)
@@ -80,9 +96,34 @@ class ProductController extends Controller
         $product->save();
         return redirect('admin/dashboard');
     }
+
+
+    //UPDATE IMAGE
+    public function   updateImage(Request $request, $id)
+    {
+        $request->validate([
+            'image' => 'required|file|image|mimes:jpeg,png,jpg|max:5000'  //ชนิดไฟล์+รูปภาพ+ขนาดสูงสุด5000kb
+        ]);
+        if ($request->hasFile("image")) {
+            $product = Product::find($id);
+            $exists = Storage::disk('local')->exists("public/product_image" . $product->image);
+            if ($exists) {
+                Storage::delete("public/product_image" . $product->image);
+            }
+            $request->image->storeAs('public/product_image', $product->image);
+            return redirect('admin/dashboard');
+        }
+    }
+
+
     //DELETE ข้อมูลสินค้า
     public function delete($id)
     {
+        $product = Product::find($id);
+        $exists = Storage::disk('local')->exists("public/product_image/" . $product->image);
+        if ($exists) {
+            Storage::delete("public/product_image/" . $product->image);
+        }
         Product::destroy($id);
         return redirect('admin/dashboard');
     }

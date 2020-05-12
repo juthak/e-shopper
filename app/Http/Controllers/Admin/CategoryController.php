@@ -15,7 +15,7 @@ class CategoryController extends Controller
     {
 
         //$categories =
-        return view('admin.CategoryForm')->with('categories', Category::paginate(5));  //แสดงเลขหน้าสินค้า
+        return view('admin.CategoryForm')->with('categories', Category::paginate(5));  //แสดงหมายเลขหน้าประเภทสินค้า
     }
 
     //INSERT เพิ่มข้อมูล(ใช้ validate ห้ามมีค่า null และ ชื่อประเภทไม่ซ้ำ)
