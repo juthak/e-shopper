@@ -29,6 +29,7 @@ class CategoryController extends Controller
         $category = new Category;
         $category->name = $request->name;
         $category->save();
+        Session()->flash("success", "เพิ่มหมวดหมู่สินค้าเรียบร้อยแล้ว");
         return redirect('/admin/createCategory');
     }
 
@@ -52,12 +53,21 @@ class CategoryController extends Controller
         $category->name = $request->name;
         $category->save();  //บันทึกข้อมูลซ้ำ
         //return view('admin.EditCategoryForm', ['category' => $category]);
+        Session()->flash("success", "แก้ไขข้อมูลเรียบร้อยแล้ว");
         return redirect('/admin/createCategory');
     }
     //DELETE ข้อมูล
     public function delete($id)
     {
-        Category::destroy($id);
+        //เช็คว่าหมวดหมู่มีสินค้าอยู่ไหม ถ้ามีลบไม่ได้
+        $category = Category::find($id);
+        if ($category->products->count() > 0) {
+            Session()->flash("failed", "ไม่สามารถลบหมวดหมู่ได้ เนื่องจากมีสินค้าใช้งานหมวดหมู่นี้อยู่!");
+            return redirect()->back();  //กลับหน้าเดิมไม่มีการลบ
+        }
+
+        $category::destroy($id);
+        Session()->flash("delete", "ลบหมวดหมู่สินค้าเรียบร้อยแล้ว");
         return redirect('/admin/createCategory');
     }
 }

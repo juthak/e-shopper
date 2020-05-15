@@ -11,6 +11,7 @@
             <th scope="col">Image</th>
             <th scope="col">Name</th>
             <th scope="col">Description</th>
+            <th scope="col">Category</th>
             <th scope="col">Price</th>
             <th scope="col">Edit Image</th>
             <th scope="col">Edit</th>
@@ -26,6 +27,8 @@
                     </td>
                     <td>{{$product->name}}</td>
                     <td>{{$product->description}}</td>
+                    <td>{{$product->category->name}}</td>
+
                     <td>{{number_format($product->price)}}</td>
 
                       <td> <a href="/admin/editProductImage/{{$product->id}}" class="btn btn-success">แก้ไขรูปภาพ</td>

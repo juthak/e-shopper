@@ -57,7 +57,11 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->image = $imageName;
         $product->save();
+        Session()->flash("success", "เพิ่มสินค้าเรียบร้อยแล้ว");
         return redirect('admin/dashboard');
+
+        //flash message
+        //$request->session()->flash('success', 'บันทึกข้อมูลเรียบร้อยแล้ว');
     }
 
     //EDIT แก้ไขข้อมูลสินค้า
@@ -65,7 +69,12 @@ class ProductController extends Controller
     {
 
         $product = product::find($id); //ดึงข้อมูลเก่ามาแสดงตอนแก้ไขข้อมูล
-        return view('admin.editProductForm')->with('product', $product);
+        return view('admin.editProductForm')
+            ->with('categories', Category::all())
+            ->with('product', Product::find($id));
+
+
+        //->with('product', $product);
     }
 
     //EDIT แก้ไขรูปภาพ
@@ -77,23 +86,25 @@ class ProductController extends Controller
     }
 
 
-
-
-
-
-
     public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required',
             'description' => 'required',
+            'category' => 'required',
             'price' => 'required|numeric',      //ชนิดตัวเลขเท่านั้น
         ]);
+
         $product = Product::find($id);
         $product->name = $request->name;
         $product->description = $request->description;
         $product->price = $request->price;
+        //เช็คว่ามีส่ง quest มาจาก category หรือเปล่า ถ้ามีแสดงว่ามีตัวเลือกใหม่
+        if ($request->category) {
+            $product->category_id = $request->category;
+        }
         $product->save();
+        Session()->flash("success", "แก้ไขข้อมูลเรียบร้อยแล้ว");
         return redirect('admin/dashboard');
     }
 
@@ -111,6 +122,7 @@ class ProductController extends Controller
                 Storage::delete("public/product_image" . $product->image);
             }
             $request->image->storeAs('public/product_image', $product->image);
+            Session()->flash("success", "แก้ไขรูปภาพเรียบร้อยแล้ว");
             return redirect('admin/dashboard');
         }
     }
@@ -125,6 +137,7 @@ class ProductController extends Controller
             Storage::delete("public/product_image/" . $product->image);
         }
         Product::destroy($id);
+        Session()->flash("delete", "ลบข้อมูลสินค้าเรียบร้อยแล้ว");
         return redirect('admin/dashboard');
     }
 }

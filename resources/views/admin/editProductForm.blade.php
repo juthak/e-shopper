@@ -28,7 +28,18 @@
             <input type="text" class="form-control" name="description" id="description" placeholder="Description" value="{{$product->description}}">
         </div>
 
-
+        <div class="form-group">
+            <label for="type">Category</label>
+            <select class="form-control" name="category">
+                @foreach($categories as $category)
+                    <option value="{{$category->id}}"
+                    @if($category->id == $product->category_id)
+                    selected
+                   @endif
+                    >{{$category->name}}</option>
+                @endforeach
+            </select>
+        </div>
 
 
 

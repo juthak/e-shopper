@@ -29,8 +29,9 @@
     <table class="table">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Category Name</th>
+            <th scope="col">รหัสสินค้า</th>
+            <th scope="col">หมวดหมู่สินค้า</th>
+            <th scope="col">จำนวนสินค้า</th>
             <th scope="col">Edit</th>
             <th scope="col">Remove</th>
           </tr>
@@ -40,6 +41,7 @@
           <tr>
             <th scope="row">{{$category->id}}</th>
             <td>{{$category->name}}</td>
+            <td>{{$category->products->count()}}</td>
             <td> <a href="/admin/editCategory/{{$category->id}}" class="btn btn-primary">แก้ไข</td>
 
             <td> <a href="/admin/deleteCategory/{{$category->id}}" class="btn btn-danger" onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่ ?')">ลบ</td>
